@@ -1,0 +1,25 @@
+{
+  "name": "frota-portaria-backend",
+  "version": "1.0.0",
+  "description": "API REST em Node.js para sistema de portaria de frota",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "lint": "node --check src/server.js && node --check src/app.js && node --check src/config/env.js && node --check src/config/database.js && node --check src/middleware/error-handler.js && node --check src/middleware/not-found.js && node --check src/middleware/authenticate.js && node --check src/middleware/authorize.js && node --check src/utils/async-handler.js && node --check src/utils/http-error.js && node --check src/utils/jwt.js && node --check src/services/movement.service.js && node --check src/controllers/health.controller.js && node --check src/controllers/auth.controller.js && node --check src/controllers/users.controller.js && node --check src/controllers/vehicles.controller.js && node --check src/controllers/drivers.controller.js && node --check src/controllers/schedules.controller.js && node --check src/controllers/suppliers.controller.js && node --check src/controllers/people.controller.js && node --check src/controllers/accesses.controller.js && node --check src/controllers/movements.controller.js && node --check src/controllers/alerts.controller.js && node --check src/controllers/dashboard.controller.js && node --check src/routes/index.js && node --check src/routes/health.routes.js && node --check src/routes/auth.routes.js && node --check src/routes/users.routes.js && node --check src/routes/vehicles.routes.js && node --check src/routes/drivers.routes.js && node --check src/routes/schedules.routes.js && node --check src/routes/suppliers.routes.js && node --check src/routes/people.routes.js && node --check src/routes/accesses.routes.js && node --check src/routes/movements.routes.js && node --check src/routes/alerts.routes.js && node --check src/routes/dashboard.routes.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

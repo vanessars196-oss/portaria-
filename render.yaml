@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: crm-frota-portaria
+    runtime: node
+    plan: free
+    rootDir: .
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CORS_ORIGIN
+        value: '*'
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_ACCESS_EXPIRES_IN
+        value: 8h
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: 7d
+      - key: DATABASE_URL
+        fromDatabase:
+          name: crm-frota-portaria-db
+          property: connectionString
+
+databases:
+  - name: crm-frota-portaria-db
+    plan: free
+    databaseName: frota_portaria
+    user: postgres

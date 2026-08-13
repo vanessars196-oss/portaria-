@@ -1,0 +1,40 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:16
+    container_name: frota_portaria_postgres
+    environment:
+      POSTGRES_DB: frota_portaria
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./sql/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+      - ./sql/seed_frota_2407.sql:/docker-entrypoint-initdb.d/03-seed-frota-2407.sql
+
+  api:
+    build: .
+    container_name: frota_portaria_api
+    depends_on:
+      - postgres
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/frota_portaria
+      CORS_ORIGIN: '*'
+      JWT_ACCESS_SECRET: troque_esta_chave_access
+      JWT_REFRESH_SECRET: troque_esta_chave_refresh
+      JWT_ACCESS_EXPIRES_IN: 8h
+      JWT_REFRESH_EXPIRES_IN: 7d
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm start
+
+volumes:
+  postgres_data:
