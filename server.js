@@ -1,15 +1,7 @@
 const app = require('./app');
-const env = require('./config/env');
-const db = require('./config/database');
 
-async function bootstrap() {
-  await db.query('SELECT 1');
-  app.listen(env.port, () => {
-    console.log(`API rodando na porta ${env.port}`);
-  });
-}
+const PORT = process.env.PORT || 10000;
 
-bootstrap().catch((error) => {
-  console.error('Falha ao iniciar a API:', error);
-  process.exit(1);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
