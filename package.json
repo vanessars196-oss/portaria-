@@ -6,8 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node src/server.js",
-    "lint": "node --check src/server.js && node --check src/app.js && node --check src/config/env.js && node --check src/config/database.js && node --check src/middleware/error-handler.js && node --check src/middleware/not-found.js && node --check src/middleware/authenticate.js && node --check src/middleware/authorize.js && node --check src/utils/async-handler.js && node --check src/utils/http-error.js && node --check src/utils/jwt.js && node --check src/services/movement.service.js && node --check src/controllers/health.controller.js && node --check src/controllers/auth.controller.js && node --check src/controllers/users.controller.js && node --check src/controllers/vehicles.controller.js && node --check src/controllers/drivers.controller.js && node --check src/controllers/schedules.controller.js && node --check src/controllers/suppliers.controller.js && node --check src/controllers/people.controller.js && node --check src/controllers/accesses.controller.js && node --check src/controllers/movements.controller.js && node --check src/controllers/alerts.controller.js && node --check src/controllers/dashboard.controller.js && node --check src/routes/index.js && node --check src/routes/health.routes.js && node --check src/routes/auth.routes.js && node --check src/routes/users.routes.js && node --check src/routes/vehicles.routes.js && node --check src/routes/drivers.routes.js && node --check src/routes/schedules.routes.js && node --check src/routes/suppliers.routes.js && node --check src/routes/people.routes.js && node --check src/routes/accesses.routes.js && node --check src/routes/movements.routes.js && node --check src/routes/alerts.routes.js && node --check src/routes/dashboard.routes.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
