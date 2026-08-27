@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRM Portaria - Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #1f2937;
+    }
+
+    .topbar {
+      background: #2563eb;
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .user-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .logout-btn {
+      background: white;
+      color: #2563eb;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .logout-btn:hover {
+      background: #e5edff;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+
+    .welcome {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      margin-bottom: 24px;
+    }
+
+    .welcome h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    .welcome p {
+      margin: 6px 0;
+      color: #4b5563;
+    }
+
+    .status {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: #6b7280;
+      font-size: 16px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .error-box {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 14px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading" class="loading">
+    Validando sessão...
+  </div>
+
+  <div id="app" class="hidden">
+    <header class="topbar">
+      <h1>CRM Portaria</h1>
+
+      <div class="user-box">
+        <span><strong id="usuarioTopo">Carregando...</strong></span>
+        <button class="logout-btn" onclick="sair()">Sair</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="welcome">
+        <h2>Dashboard</h2>
+        <p>Login realizado com sucesso.</p>
+        <p>Usuário autenticado: <strong id="usuario"></strong></p>
+        <p>Perfil: <strong id="perfil"></strong></p>
+
+        <div id="status" class="status">
+          Sessão ativa e token validado com sucesso.
+        </div>
+
+        <div id="erro" class="error-box hidden"></div>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <h3>Controle de acesso</h3>
+          <p>Área pronta para exibir entradas, saídas e registros da portaria.</p>
+        </div>
+
+        <div class="card">
+          <h3>Visitantes</h3>
+          <p>Espaço para cadastro e consulta de visitantes autorizados.</p>
+        </div>
+
+        <div class="card">
+          <h3>Moradores</h3>
+          <p>Espaço reservado para informações de moradores e unidades.</p>
+        </div>
+
+        <div class="card">
+          <h3>Veículos</h3>
+          <p>Área para placas, permissões e histórico de acesso.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    async function validarSessao() {
+      const token = localStorage.getItem('accessToken');
+      const loading = document.getElementById('loading');
+      const app = document.getElementById('app');
+      const erro = document.getElementById('erro');
+
+      if (!token) {
+        window.location.href = '/';
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/auth/me', {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.success || !data.user) {
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          window.location.href = '/';
+          return;
+        }
+
+        const email = data.user.email || 'admin@portaria.local';
+        const role = data.user.role || 'admin';
+
+        document.getElementById('usuario').textContent = email;
+        document.getElementById('usuarioTopo').textContent = email;
+        document.getElementById('perfil').textContent = role;
+
+        loading.classList.add('hidden');
+        app.classList.remove('hidden');
+      } catch (e) {
+        erro.textContent = 'Erro ao validar sessão com o servidor.';
+        erro.classList.remove('hidden');
+
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1500);
+      }
+    }
+
+    function sair() {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      window.location.href = '/';
+    }
+
+    window.onload = validarSessao;
+  </script>
+</body>
+</html>
