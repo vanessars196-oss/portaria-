@@ -25,7 +25,8 @@ services:
           property: connectionString
 
 databases:
+  databases:
   - name: crm-frota-portaria-db
     plan: free
     databaseName: frota_portaria
-    user: postgres
+
