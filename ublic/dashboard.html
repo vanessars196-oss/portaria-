@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRM Portaria - Painel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 40px;
+    }
+    .box {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    h1 {
+      margin-top: 0;
+    }
+    button {
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 8px;
+      background: #2563eb;
+      color: #fff;
+      cursor: pointer;
+    }
+    button.logout {
+      background: #dc2626;
+      margin-left: 8px;
+    }
+    pre {
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: 8px;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>CRM Portaria</h1>
+    <p>Você entrou no sistema com sucesso.</p>
+
+    <button onclick="verificar()">Validar sessão</button>
+    <button class="logout" onclick="sair()">Sair</button>
+
+    <h3>Resposta da API</h3>
+    <pre id="saida">Nenhuma validação executada ainda.</pre>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('accessToken');
+
+    if (!token) {
+      window.location.href = '/';
+    }
+
+    async function verificar() {
+      const saida = document.getElementById('saida');
+
+      try {
+        const res = await fetch('/api/auth/me', {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        });
+
+        const data = await res.json();
+        saida.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        saida.textContent = 'Erro ao validar sessão.';
+      }
+    }
+
+    function sair() {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      window.location.href = '/';
+    }
+  </script>
+</body>
+</html>
