@@ -14,7 +14,7 @@ app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({ origin: env.corsOrigin === '*' ? true : env.corsOrigin.split(',') }));
 app.use(express.json({ limit: '5mb' }));
 app.use(morgan('dev'));
-app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api', (req, res) => {
   res.json({
@@ -40,11 +40,15 @@ app.get('/api', (req, res) => {
 });
 
 app.use('/api', routes);
+
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api')) return next();
-  return res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+  return res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
 app.use(notFound);
 app.use(errorHandler);
 
 module.exports = app;
+
+
