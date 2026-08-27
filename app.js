@@ -19,22 +19,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/api', (req, res) => {
   res.json({
     success: true,
-    message: 'Backend do sistema de portaria de frota online',
+    message: 'Backend do sistema de portaria online',
     docs: {
       health: '/api/health',
       login: '/api/auth/login',
-      me: '/api/auth/me',
-      users: '/api/users',
-      vehicles: '/api/vehicles',
-      drivers: '/api/drivers',
-      schedules: '/api/schedules',
-      suppliers: '/api/suppliers',
-      people: '/api/people',
-      accesses: '/api/accesses',
-      departures: '/api/movements/departures',
-      entries: '/api/movements/entries',
-      alerts: '/api/alerts',
-      dashboard: '/api/dashboard/summary'
+      me: '/api/auth/me'
     }
   });
 });
@@ -50,5 +39,4 @@ app.use(notFound);
 app.use(errorHandler);
 
 module.exports = app;
-
 
