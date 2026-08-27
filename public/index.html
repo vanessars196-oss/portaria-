@@ -14,18 +14,21 @@
       height: 100vh;
       margin: 0;
     }
+
     .box {
       background: #fff;
       padding: 32px;
       border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
       width: 320px;
     }
+
     h1 {
       margin-top: 0;
       font-size: 24px;
       text-align: center;
     }
+
     input {
       width: 100%;
       padding: 12px;
@@ -34,6 +37,7 @@
       border-radius: 8px;
       box-sizing: border-box;
     }
+
     button {
       width: 100%;
       padding: 12px;
@@ -44,24 +48,46 @@
       cursor: pointer;
       font-size: 16px;
     }
+
     button:hover {
       background: #1d4ed8;
     }
+
     .msg {
       margin-top: 16px;
       font-size: 14px;
       text-align: center;
     }
-    .ok { color: green; }
-    .erro { color: red; }
+
+    .ok {
+      color: green;
+    }
+
+    .erro {
+      color: red;
+    }
   </style>
 </head>
 <body>
   <div class="box">
     <h1>CRM Portaria</h1>
-    <input type="email" id="email" placeholder="E-mail" value="admin@portaria.local" />
-    <input type="password" id="password" placeholder="Senha" value="123456" />
+
+    <input
+      type="email"
+      id="email"
+      placeholder="E-mail"
+      value="admin@portaria.local"
+    />
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Senha"
+      value="123456"
+    />
+
     <button onclick="login()">Entrar</button>
+
     <div id="msg" class="msg"></div>
   </div>
 
@@ -86,15 +112,15 @@
         const data = await res.json();
 
         if (data.success) {
-  localStorage.setItem('accessToken', data.accessToken);
-  localStorage.setItem('refreshToken', data.refreshToken);
-  msg.className = 'msg ok';
-  msg.textContent = 'Login realizado com sucesso! Redirecionando...';
-  setTimeout(() => {
-    window.location.href = '/dashboard.html';
-  }, 800);
-}
+          localStorage.setItem('accessToken', data.accessToken);
+          localStorage.setItem('refreshToken', data.refreshToken);
 
+          msg.className = 'msg ok';
+          msg.textContent = 'Login realizado com sucesso! Redirecionando...';
+
+          setTimeout(() => {
+            window.location.href = '/dashboard.html';
+          }, 800);
         } else {
           msg.className = 'msg erro';
           msg.textContent = data.message || 'Falha no login';
@@ -107,4 +133,3 @@
   </script>
 </body>
 </html>
-
